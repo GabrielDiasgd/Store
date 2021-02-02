@@ -32,13 +32,13 @@ public class Sale {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String codeSale; //código venda?
-	private BigDecimal subtotol;
+	private BigDecimal subtotal;
 	private BigDecimal totalValue;
 	private OffsetDateTime dateSale;
 	
 	private StatusSale statusSale; // Verificar nome depois
 	
-	//private String type; //enum Adicionar no banco de dados
+	private String type; //enum Adicionar no banco de dados
 	
 	
 	@ManyToOne

@@ -47,6 +47,7 @@ public class Product {
 	
 	@PositiveOrZero(groups = Groups.registerProduct.class)
 	private BigDecimal buyPrice;
+	
 	private Boolean active = true;
 	
 	@JsonIgnoreProperties(allowGetters = false)

@@ -98,10 +98,11 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS sale (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `date_sale` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `subtotol` DECIMAL(10,4) NOT NULL,
+  `subtotal` DECIMAL(10,4) NOT NULL,
   `total_value` DECIMAL(10,4) NOT NULL,
   `code_sale` VARCHAR(150) NULL,
-  `status_sale` TINYINT(2) NULL,
+  `status_sale` TINYINT(2) not NULL,
+  `type` Tinyint(2) Not null,
   `client_id` bigint unsigned  NOT NULL,
   `user_id` bigint unsigned  NOT NULL,
   PRIMARY KEY (`id`),

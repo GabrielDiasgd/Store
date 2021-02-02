@@ -1,5 +1,7 @@
 package com.store.user.service;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -21,6 +23,11 @@ public class UserService {
 				.orElseThrow(() -> new UserNotFoundException(userId));
 		
 		return user;
+	}
+	
+	@Transactional
+	public User save (User user) {
+		return userRepositoty.save(user);
 	}
 	
 	

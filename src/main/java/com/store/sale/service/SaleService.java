@@ -38,19 +38,15 @@ public class SaleService {
 		Client client = clientService.find(sale.getClient().getId());
 		User user = userService.find(sale.getUser().getId());
 		sale.setDateSale(OffsetDateTime.now());
-		sale.setSubtotol(BigDecimal.ZERO);
+		sale.setSubtotal(BigDecimal.ZERO);
 		sale.setStatusSale(StatusSale.FINALIZADA);
-		
 		
 		sale.setClient(client);
 		sale.setUser(user);
-		
-		
-		
+	
 		
 		validateProducts(sale);
 		sale.calculateTotalValue();
-		System.out.println(sale.getTotalValue());
 		saleRepository.save(sale);
 		
 		return sale;	
@@ -58,7 +54,6 @@ public class SaleService {
 	
 	
 	public void validateProducts (Sale sale) {
-		System.out.println(sale.getProductsSale().get(0));
 		sale.getProductsSale().forEach(productSale -> {
 		Product product = productService.find(productSale.getProduct().getId());
 		System.out.println(product.getName());

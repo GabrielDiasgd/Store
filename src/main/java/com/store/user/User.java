@@ -1,11 +1,14 @@
 package com.store.user;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -25,7 +28,11 @@ public class User {
 	private String cpf;
 	private String rg;
 	private String password;
-	private Boolean active;
-	private Date dateCreation;
-	private Date dateUpdate;
+	private Boolean active = true;
+	
+	@CreationTimestamp
+	private LocalDateTime dateCreation;
+	
+	@UpdateTimestamp
+	private LocalDateTime dateUpdate;
 }

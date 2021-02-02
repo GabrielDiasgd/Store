@@ -1,11 +1,14 @@
 package com.store.address;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -26,8 +29,11 @@ public class Address {
 	private String neighborhood;
 	private String complement;
 	private String cep;
-	private OffsetDateTime dateCreation;
-	private OffsetDateTime dateUpdate;
 	
+	@CreationTimestamp
+	private LocalDateTime dateCreation;
 	
+	@UpdateTimestamp
+	private LocalDateTime dateUpdate;
+
 }
