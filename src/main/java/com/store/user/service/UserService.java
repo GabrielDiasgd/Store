@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import com.store.exception.EntityInUseException;
 import com.store.exception.UserNotFoundException;
+import com.store.profile.Profile;
+import com.store.profile.service.ProfileService;
 import com.store.user.User;
 import com.store.user.repository.UserRepositoty;
 
@@ -17,6 +19,9 @@ public class UserService {
 
 	@Autowired
 	private UserRepositoty userRepositoty;
+	
+	@Autowired
+	private ProfileService profileService;
 	
 	public User find (Long userId) {
 		User user = userRepositoty.findById(userId)
@@ -27,6 +32,9 @@ public class UserService {
 	
 	@Transactional
 	public User save (User user) {
+		Profile profile = profileService.find(user.getProfile().getId());
+		
+		user.setProfile(profile);
 		return userRepositoty.save(user);
 	}
 	

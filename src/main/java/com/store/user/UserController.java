@@ -2,6 +2,8 @@ package com.store.user;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.store.exception.BusinessException;
+import com.store.exception.ProfileNotFoundException;
 import com.store.user.repository.UserRepositoty;
 import com.store.user.service.UserService;
 
@@ -42,16 +46,28 @@ public class UserController {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public User add (@RequestBody User user) {
-		return userService.save(user);
+	public User add (@RequestBody @Valid User user) {
+		try {
+			return userService.save(user);
+		} catch (ProfileNotFoundException e) {
+			throw new BusinessException(e.getMessage());
+		}
+		
 	}
 	
 	@PutMapping("/{userId}")
-	public User update (@PathVariable Long userId, @RequestBody User user) {
-		User currentUser = userService.find(userId);
-		BeanUtils.copyProperties(user, currentUser, "id", "dataCreation");
+	public User update (@PathVariable Long userId, @Valid @RequestBody User user) {
+		try {
+			User currentUser = userService.find(userId);
+			
+			BeanUtils.copyProperties(user, currentUser, "id", "dateCreation");
+			
+			return userService.save(currentUser);
+		} catch (ProfileNotFoundException e) {
+			throw new BusinessException(e.getMessage());
+		}
 		
-		return userService.save(currentUser);
+		
 	}
 	
 	

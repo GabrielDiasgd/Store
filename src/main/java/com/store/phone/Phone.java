@@ -1,4 +1,4 @@
-package com.store.permission;
+package com.store.phone;
 
 import java.time.LocalDateTime;
 
@@ -14,21 +14,20 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Entity
-@Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Permission {
+@Data
+public class Phone {
 	
-	@EqualsAndHashCode.Include
 	@Id
+	@EqualsAndHashCode.Include
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	private String description;
+
+	private String number;
 	
 	@CreationTimestamp
 	private LocalDateTime dateCreation;
 	
 	@UpdateTimestamp
 	private LocalDateTime dateUpdate;
-
 }

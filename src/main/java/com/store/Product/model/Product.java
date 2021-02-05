@@ -13,12 +13,14 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
+import javax.validation.groups.ConvertGroup;
+import javax.validation.groups.Default;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.store.Groups;
+import com.store.Groups.categoryId;
 import com.store.provider.model.Provider;
 
 import lombok.Data;
@@ -34,18 +36,18 @@ public class Product {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotBlank(groups = Groups.registerProduct.class)
+	@NotBlank
 	private String name;
 	
 	private String description;
 	
-	@PositiveOrZero(groups = Groups.registerProduct.class)
+	@PositiveOrZero
 	private Long stock;
 	
-	@PositiveOrZero(groups = Groups.registerProduct.class)
+	@PositiveOrZero
 	private BigDecimal price;
 	
-	@PositiveOrZero(groups = Groups.registerProduct.class)
+	@PositiveOrZero
 	private BigDecimal buyPrice;
 	
 	private Boolean active = true;
@@ -62,7 +64,8 @@ public class Product {
 	private Date dateUpdate;
 	
 	@Valid
-	@NotNull(groups = Groups.registerProduct.class)
+	@ConvertGroup(from = Default.class, to = categoryId.class)
+	@NotNull
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Category category;

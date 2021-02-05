@@ -21,7 +21,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Category {
 	
-	@NotNull(groups = Groups.registerProduct.class)
+	@NotNull(groups = Groups.categoryId.class)
 	@EqualsAndHashCode.Include
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

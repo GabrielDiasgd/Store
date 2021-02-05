@@ -1,13 +1,65 @@
+CREATE TABLE IF NOT EXISTS state (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NOT NULL,
+  `date_creation` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_update` DATETIME NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS city (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NOT NULL,
+  `state_id` bigint unsigned NOT NULL,
+  `date_creation` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_update` DATETIME NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  INDEX `fk_city_state_id` (`state_id` ASC),
+  CONSTRAINT `fk_city_state`
+    FOREIGN KEY (`state_id`)
+    REFERENCES state (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS address (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `street` VARCHAR(60) NOT NULL,
+  `number` VARCHAR(10) NOT NULL,
+  `neighborhood` VARCHAR(60) NOT NULL,
+  `complement` VARCHAR(60) NULL,
+   `cep` VARCHAR(45) NOT NULL,
+   `city_id` bigint unsigned NOT NULL,
+  `date_creation` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_update` DATETIME NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  index `fk_address_city_id` (`city_id` ASC),
+  constraint `fk_address_city`
+  foreign key (`city_id`)
+  references city(`id`)
+  )
+ENGINE = InnoDB;
+
 CREATE TABLE IF NOT EXISTS provider (
   `id`  bigint unsigned NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   `cnpj` VARCHAR(45) NOT NULL,
   `email` VARCHAR(45) NULL,
+  `phone` varchar(12) null,
+  `cell_phone` varchar(12) null,
+  `sac` varchar(45) null,
+  `site` varchar(30) null,
+  `contact` varchar (45),
   `note` VARCHAR(90) NULL,
   `active` TINYINT NOT NULL,
+  `address_id` bigint unsigned  NOT NULL,
   `date_creation` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_update` DATETIME NULL ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`))
+  PRIMARY KEY (`id`),
+  index `fk_povider_address_id` (`address_id` ASC),
+  CONSTRAINT `fk_provider_address`
+  Foreign key (`address_id`)
+  references address(`id`)
+  )
 ENGINE = InnoDB;
 
 
@@ -98,11 +150,11 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS sale (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `date_sale` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `subtotal` DECIMAL(10,4) NOT NULL,
+  `subtotol` DECIMAL(10,4) NOT NULL,
   `total_value` DECIMAL(10,4) NOT NULL,
-  `code_sale` VARCHAR(150) NULL,
-  `status_sale` TINYINT(2) not NULL,
-  `type` Tinyint(2) Not null,
+  `code` VARCHAR(45) NULL,
+  `status` TINYINT(2) NULL,
+  `change` DECIMAL(10,4) NULL,
   `client_id` bigint unsigned  NOT NULL,
   `user_id` bigint unsigned  NOT NULL,
   PRIMARY KEY (`id`),
@@ -143,18 +195,6 @@ CREATE TABLE IF NOT EXISTS product_sale (
 ENGINE = InnoDB;
 
 
-CREATE TABLE IF NOT EXISTS address (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `street` VARCHAR(60) NOT NULL,
-  `number` VARCHAR(10) NOT NULL,
-  `neighborhood` VARCHAR(60) NOT NULL,
-  `complement` VARCHAR(60) NULL,
-  `date_creation` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `date_update` DATETIME NULL ON UPDATE CURRENT_TIMESTAMP,
-  `cep` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
-
 
 CREATE TABLE IF NOT EXISTS client_address (
   `client_id` bigint unsigned  NOT NULL,
@@ -167,24 +207,6 @@ CREATE TABLE IF NOT EXISTS client_address (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_client_has_address_address`
-    FOREIGN KEY (`address_id`)
-    REFERENCES address (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
-CREATE TABLE IF NOT EXISTS provider_address (
-  `provider_id` bigint unsigned  NOT NULL,
-  `address_id` bigint unsigned  NOT NULL,
-  INDEX `fk_provider_has_address_address_id` (`address_id` ASC) ,
-  INDEX `fk_provider_has_address_provider_id` (`provider_id` ASC),
-  CONSTRAINT `fk_provider_has_address_provider`
-    FOREIGN KEY (`provider_id`)
-    REFERENCES provider (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_provider_has_address_address`
     FOREIGN KEY (`address_id`)
     REFERENCES address (`id`)
     ON DELETE NO ACTION
@@ -219,23 +241,6 @@ CREATE TABLE IF NOT EXISTS client_phone (
 ENGINE = InnoDB;
 
 
-CREATE TABLE IF NOT EXISTS provider_phone (
-  `provider_id` bigint unsigned  NOT NULL,
-  `phone_id` bigint unsigned  NOT NULL,
-  INDEX `fk_provider_has_phone_phone_id` (`phone_id` ASC),
-  INDEX `fk_provider_has_phone_provider_id` (`provider_id` ASC),
-  CONSTRAINT `fk_provider_has_phone_provider`
-    FOREIGN KEY (`provider_id`)
-    REFERENCES provider (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_provider_has_phone_phone`
-    FOREIGN KEY (`phone_id`)
-    REFERENCES phone (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
 
 CREATE TABLE IF NOT EXISTS permission (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
@@ -259,32 +264,6 @@ CREATE TABLE IF NOT EXISTS permission_profle(
   CONSTRAINT `fk_permission_has_perfil_perfil`
     FOREIGN KEY (`profile_id`)
     REFERENCES profile (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
-CREATE TABLE IF NOT EXISTS state (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(45) NOT NULL,
-  `date_creation` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `date_update` DATETIME NULL ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
-
-
-
-CREATE TABLE IF NOT EXISTS city (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(45) NOT NULL,
-  `state_id` bigint unsigned NOT NULL,
-  `date_creation` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `date_update` DATETIME NULL ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  INDEX `fk_city_state_id` (`state_id` ASC),
-  CONSTRAINT `fk_city_state`
-    FOREIGN KEY (`state_id`)
-    REFERENCES state (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

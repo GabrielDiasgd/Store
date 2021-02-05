@@ -6,9 +6,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
+import com.store.profile.Profile;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -23,6 +28,7 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@NotEmpty
 	private String name;
 	private String email;
 	private String cpf;
@@ -35,4 +41,8 @@ public class User {
 	
 	@UpdateTimestamp
 	private LocalDateTime dateUpdate;
+	
+	@ManyToOne
+	@JoinColumn(name = "profile_id", nullable = false)
+	private Profile profile;
 }

@@ -2,10 +2,11 @@ package com.store.Product.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.store.Groups;
 import com.store.Product.model.Product;
 import com.store.Product.repository.ProductRepository;
 import com.store.Product.service.ProductService;
@@ -46,7 +46,7 @@ public class ProductController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Product add(@RequestBody @Validated(Groups.registerProduct.class) Product product) {
+	public Product add(@RequestBody @Valid Product product) {
 		try {
 			return productService.save(product);
 		} catch (CategoryNotFoundException | ProviderNotFoundException e) {
@@ -57,7 +57,7 @@ public class ProductController {
 
 	@PutMapping("/{productId}")
 	@ResponseStatus(HttpStatus.OK)
-	public Product update(@PathVariable Long productId, @RequestBody Product product) {
+	public Product update(@PathVariable Long productId, @RequestBody @Valid Product product) {
 		try {
 			Product currentProduct = productService.find(productId);
 			BeanUtils.copyProperties(product, currentProduct, "id", "dateCreation");

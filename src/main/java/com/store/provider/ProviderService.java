@@ -7,6 +7,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.store.address.Address;
+import com.store.address.AddressRepository;
 import com.store.exception.EntityInUseException;
 import com.store.exception.ProviderNotFoundException;
 import com.store.provider.model.Provider;
@@ -18,6 +20,9 @@ public class ProviderService {
 	@Autowired
 	private ProviderRepository providerRepository;
 	
+	@Autowired
+	private AddressRepository addressRepository;
+	
 	
 	public Provider find (Long providerId) {
 		Provider provider = providerRepository.findById(providerId)
@@ -27,6 +32,10 @@ public class ProviderService {
 	
 	@Transactional
 	public Provider save (Provider provider) {
+		Address address = addressRepository.save(provider.getAddress());// Verificar porque não está puxando a cidade no json de resposta
+				
+		provider.setAddress(address);
+		
 		return providerRepository.save(provider);
 	}
 	

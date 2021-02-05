@@ -17,6 +17,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.store.address.Address;
+import com.store.phone.Phone;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -32,6 +33,8 @@ public class Client {
 	private Long id;
 	
 	private String name;
+	
+	
 	private String cpf;
 	private String rg;
 	private String email;
@@ -52,6 +55,21 @@ public class Client {
 			joinColumns = @JoinColumn(name = "client_id"),
 			inverseJoinColumns = @JoinColumn(name = "address_id"))
 	private List<Address> clientAddress = new ArrayList<>();
+	
+	@ManyToMany
+	@JoinTable(name = "client_phone",
+			joinColumns =  @JoinColumn(name = "client_id"),
+			inverseJoinColumns = @JoinColumn(name = "phone_id"))
+	private List<Phone> clientPhone = new ArrayList<>();
+	
+	
+	public boolean disassociateAddress(Address address) {
+		return getClientAddress().remove(address);
+	}
+	
+	public boolean associateAddress(Address address) {
+		return getClientAddress().add(address);
+	}
 	
 	
 }

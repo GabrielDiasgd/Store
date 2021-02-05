@@ -9,6 +9,6 @@ public class ProfileNotFoundException extends EntityNotFoundException {
 	}
 
 	public ProfileNotFoundException(Long profileId) {
-		super(String.format("Profife with id %d not found", profileId));
+		super(String.format("Profile with id %d not found", profileId));
 	}
 }
