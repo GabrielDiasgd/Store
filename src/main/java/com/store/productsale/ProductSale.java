@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.store.Product.model.Product;
 import com.store.sale.model.Sale;
 
@@ -35,6 +36,8 @@ public class ProductSale {
 	@JoinColumn(nullable = false, name = "product_id")
 	private Product product;
 	
+	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn( nullable = false, name = "sale_id")
 	private Sale sale;

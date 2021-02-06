@@ -1,7 +1,6 @@
 package com.store.sale.service;
 
-import java.math.BigDecimal;
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 
 import javax.transaction.Transactional;
 
@@ -37,9 +36,8 @@ public class SaleService {
 	public Sale save (Sale sale) {
 		Client client = clientService.find(sale.getClient().getId());
 		User user = userService.find(sale.getUser().getId());
-		sale.setDateSale(OffsetDateTime.now());
-		sale.setSubtotal(BigDecimal.ZERO);
-		sale.setStatusSale(StatusSale.FINALIZADA);
+		sale.setDateSale(LocalDateTime.now());
+		sale.setStatusSale(StatusSale.FINISHED);
 		
 		sale.setClient(client);
 		sale.setUser(user);

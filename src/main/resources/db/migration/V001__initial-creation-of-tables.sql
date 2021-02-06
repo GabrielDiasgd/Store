@@ -150,10 +150,10 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS sale (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `date_sale` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `subtotol` DECIMAL(10,4) NOT NULL,
+  `subtotal` DECIMAL(10,4) NOT NULL,
   `total_value` DECIMAL(10,4) NOT NULL,
-  `code` VARCHAR(45) NULL,
-  `status` TINYINT(2) NULL,
+  `code_sale` VARCHAR(45) NULL,
+  `status_sale` TINYINT(2) NULL,
   `change` DECIMAL(10,4) NULL,
   `client_id` bigint unsigned  NOT NULL,
   `user_id` bigint unsigned  NOT NULL,
@@ -251,7 +251,7 @@ CREATE TABLE IF NOT EXISTS permission (
 ENGINE = InnoDB;
 
 
-CREATE TABLE IF NOT EXISTS permission_profle(
+CREATE TABLE IF NOT EXISTS permission_profile(
   `permission_id` bigint unsigned NOT NULL,
   `profile_id` bigint unsigned  NOT NULL,
   INDEX `fk_permission_has_perfil_perfil_id` (`profile_id` ASC),
@@ -261,7 +261,7 @@ CREATE TABLE IF NOT EXISTS permission_profle(
     REFERENCES permission (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_permission_has_perfil_perfil`
+  CONSTRAINT `fk_permission_has_profile_profile`
     FOREIGN KEY (`profile_id`)
     REFERENCES profile (`id`)
     ON DELETE NO ACTION

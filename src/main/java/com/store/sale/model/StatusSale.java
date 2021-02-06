@@ -2,7 +2,7 @@ package com.store.sale.model;
 
 public enum StatusSale {
 	
-	ABERTA(0), FINALIZADA(1);
+	OPEN(0), FINISHED(1);
 	
 	private Integer code;
 	
