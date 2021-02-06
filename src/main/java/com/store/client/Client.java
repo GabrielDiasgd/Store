@@ -71,5 +71,12 @@ public class Client {
 		return getClientAddress().add(address);
 	}
 	
+	public Boolean disassociatePhone(Phone phone) {
+		return getClientPhone().remove(phone);
+	}
+	
+	public Boolean assiciatePhone(Phone phone) {
+		return getClientPhone().add(phone);
+	}
 	
 }

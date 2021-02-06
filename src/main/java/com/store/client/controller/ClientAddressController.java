@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.store.address.Address;
 import com.store.client.service.ClientService;
 import com.store.exception.AddressNotFoundException;
-import com.store.exception.EntityNotFoundException;
+import com.store.exception.BusinessException;
+import com.store.exception.CityNotFoundException;
 
 @RestController
 @RequestMapping("/clients/{clientId}/address")
@@ -22,22 +23,26 @@ public class ClientAddressController {
 	@Autowired
 	private ClientService clientService;
 	
-	
+
 
 	@PutMapping
 	public Address add (@PathVariable Long clientId, @RequestBody Address address) {
-		return clientService.associateClientAddress(clientId, address);
+		try {
+			return clientService.addClientAddress(clientId, address);
+		} catch (AddressNotFoundException | CityNotFoundException e) {
+			throw new BusinessException(e.getMessage());
+		}
+		
+		
 	}
 	
 	@PutMapping("/{addressId}")
 	public Address update (@PathVariable Long clientId, @PathVariable Long addressId,
 			@RequestBody Address address) {
-		
 		try {
 			return clientService.updateClientAddress(clientId, addressId, address);
-		} catch (EntityNotFoundException e) {
-			throw new AddressNotFoundException(String.format(
-					"Não foi encontrado endereço de código %d, para o cliente de código %d.", addressId, clientId));
+		} catch (AddressNotFoundException | CityNotFoundException e) {
+			throw new BusinessException(e.getMessage());
 		}
 		
 
@@ -46,7 +51,7 @@ public class ClientAddressController {
 	@DeleteMapping("/{addressId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void disassociateClientAddress (@PathVariable Long clientId, @PathVariable Long addressId) {
-		clientService.disassociateClientAddress(clientId, addressId);
+		clientService.deleteClientAddress(clientId, addressId);
 		
 	}
 	
