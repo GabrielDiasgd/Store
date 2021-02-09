@@ -50,6 +50,7 @@ public class Client {
 	@UpdateTimestamp
 	private LocalDateTime dateUpdate;
 	
+	
 	@ManyToMany
 	@JoinTable(name = "client_address", 
 			joinColumns = @JoinColumn(name = "client_id"),

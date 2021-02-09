@@ -50,7 +50,7 @@ public class ClientController {
 	
 		Client currentClient = clientService.find(clientId);
 		
-		BeanUtils.copyProperties(client, currentClient, "id", "dateCreation");
+		BeanUtils.copyProperties(client, currentClient, "id", "dateCreation", "clientAddress", "clientPhone");
 		
 		return clientService.save(currentClient);
 	}
