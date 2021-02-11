@@ -1,6 +1,6 @@
 package com.store.phone;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,8 +26,8 @@ public class Phone {
 	private String number;
 	
 	@CreationTimestamp
-	private LocalDateTime dateCreation;
+	private OffsetDateTime dateCreation;
 	
 	@UpdateTimestamp
-	private LocalDateTime dateUpdate;
+	private OffsetDateTime dateUpdate;
 }

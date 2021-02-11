@@ -1,6 +1,6 @@
 package com.store.sale.service;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import javax.transaction.Transactional;
 
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.store.Product.model.Product;
 import com.store.Product.service.ProductService;
-import com.store.client.Client;
+import com.store.client.model.Client;
 import com.store.client.service.ClientService;
 import com.store.sale.model.Sale;
 import com.store.sale.model.StatusSale;
@@ -36,7 +36,7 @@ public class SaleService {
 	public Sale save (Sale sale) {
 		Client client = clientService.find(sale.getClient().getId());
 		User user = userService.find(sale.getUser().getId());
-		sale.setDateSale(LocalDateTime.now());
+		sale.setDateSale(OffsetDateTime.now());
 		sale.setStatusSale(StatusSale.FINISHED);
 		
 		sale.setClient(client);

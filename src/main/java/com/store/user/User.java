@@ -1,6 +1,6 @@
 package com.store.user;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -37,10 +37,10 @@ public class User {
 	private Boolean active = true;
 	
 	@CreationTimestamp
-	private LocalDateTime dateCreation;
+	private OffsetDateTime dateCreation;
 	
 	@UpdateTimestamp
-	private LocalDateTime dateUpdate;
+	private OffsetDateTime dateUpdate;
 	
 	@ManyToOne
 	@JoinColumn(name = "profile_id", nullable = false)

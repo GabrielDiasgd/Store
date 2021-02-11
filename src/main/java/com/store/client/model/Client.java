@@ -1,8 +1,8 @@
-package com.store.client;
+package com.store.client.model;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -39,16 +39,16 @@ public class Client {
 	private String rg;
 	private String email;
 	private String note;
-	private Date birthDate;
+	private LocalDate birthDate;
 	private Boolean active = true;
 	private String clientType; //Enum
-	private String clientStatus; //Enum
+	private ClientStatus clientStatus; //Enum
 	
 	@CreationTimestamp
-	private LocalDateTime dateCreation;
+	private OffsetDateTime dateCreation;
 	
 	@UpdateTimestamp
-	private LocalDateTime dateUpdate;
+	private OffsetDateTime dateUpdate;
 	
 	
 	@ManyToMany

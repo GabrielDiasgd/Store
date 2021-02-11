@@ -1,6 +1,6 @@
 package com.store.address;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -36,10 +36,10 @@ public class Address {
 	
 
 	@CreationTimestamp
-	private LocalDateTime dateCreation;
+	private OffsetDateTime dateCreation;
 	
 	@UpdateTimestamp
-	private LocalDateTime dateUpdate;
+	private OffsetDateTime dateUpdate;
 	
 	@ManyToOne
 	@JoinColumn(nullable = false)

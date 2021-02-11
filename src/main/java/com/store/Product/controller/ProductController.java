@@ -17,6 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.store.Product.ProductDTO;
+import com.store.Product.converters.ProductAssemblerDTO;
+import com.store.Product.converters.ProductDisassemblerInput;
+import com.store.Product.input.ProductInput;
 import com.store.Product.model.Product;
 import com.store.Product.repository.ProductRepository;
 import com.store.Product.service.ProductService;
@@ -33,22 +37,29 @@ public class ProductController {
 
 	@Autowired
 	private ProductService productService;
+	
+	@Autowired
+	private ProductAssemblerDTO productAssembler;
+	
+	@Autowired
+	private ProductDisassemblerInput productDisassembler;
 
 	@GetMapping
-	public List<Product> listProduct() {
-		return productRepostory.findAll();
+	public List<ProductDTO> listProduct() {
+		return productAssembler.toCollectionDTO(productRepostory.findAll());
 	}
 
 	@GetMapping("/{productId}")
-	public Product find(@PathVariable Long productId) {
-		return productService.find(productId);
+	public ProductDTO find(@PathVariable Long productId) {
+		return productAssembler.toDTO(productService.find(productId));
 	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Product add(@RequestBody @Valid Product product) {
+	public ProductDTO add(@RequestBody @Valid ProductInput productInput) {
 		try {
-			return productService.save(product);
+			Product product = productDisassembler.toDomainObject(productInput);
+			return productAssembler.toDTO(productService.save(product));
 		} catch (CategoryNotFoundException | ProviderNotFoundException e) {
 			throw new BusinessException(e.getMessage());
 		}
@@ -57,12 +68,14 @@ public class ProductController {
 
 	@PutMapping("/{productId}")
 	@ResponseStatus(HttpStatus.OK)
-	public Product update(@PathVariable Long productId, @RequestBody @Valid Product product) {
+	public ProductDTO update(@PathVariable Long productId, @RequestBody @Valid ProductInput productInput) {
 		try {
+			Product product = productDisassembler.toDomainObject(productInput);
 			Product currentProduct = productService.find(productId);
+			
 			BeanUtils.copyProperties(product, currentProduct, "id", "dateCreation");
-			productService.save(currentProduct);
-			return currentProduct;
+			return productAssembler.toDTO(productService.save(currentProduct));
+			
 		} catch (CategoryNotFoundException | ProviderNotFoundException e) {
 			throw new BusinessException(e.getMessage());
 		}

@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.store.address.Address;
 import com.store.address.AddressService;
-import com.store.client.Client;
+import com.store.client.model.Client;
 import com.store.client.repository.ClientRepository;
 import com.store.exception.ClientNotFoundException;
 import com.store.exception.EntityInUseException;

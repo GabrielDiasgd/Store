@@ -69,13 +69,13 @@ values ("Shorts Puma", "", 10, 99.99, 60, 1, utc_timestamp(),2,3);
 
 
 insert into client (name, cpf, rg, birth_date, email, active, client_type, client_status, date_creation, date_update)
-values ("Gabriel Dias", "447191990839", "434055839", 19980525, "gabriel@gmail.com", 1, 1,2, utc_timestamp(), utc_timestamp());
+values ("Gabriel Dias", "447191990839", "434055839", 19980525, "gabriel@gmail.com", 1, 1,1, utc_timestamp(), utc_timestamp());
 
 insert into client (name, cpf, rg, birth_date, email, active, client_type, client_status, date_creation, date_update)
-values ("Silvana Dias", "11081670800", "1654643211351", 19640213, "silvana@gmail.com", 1, 1,2, utc_timestamp(), utc_timestamp());
+values ("Silvana Dias", "11081670800", "1654643211351", 19640213, "silvana@gmail.com", 1, 1,0, utc_timestamp(), utc_timestamp());
 
 insert into client (name, cpf, rg, birth_date, email, active, client_type, client_status, date_creation, date_update)
-values ("Noel", "05161733837", "687983132", 19640602, "noel@gmail.com", 1, 1,2, utc_timestamp(), utc_timestamp());
+values ("Noel", "05161733837", "687983132", 19640602, "noel@gmail.com", 1, 1,1, utc_timestamp(), utc_timestamp());
 
 
 

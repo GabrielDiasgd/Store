@@ -1,10 +1,9 @@
 package com.store.Product.model;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.OffsetDateTime;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,7 +20,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.store.Groups.categoryId;
 import com.store.provider.model.Provider;
 
@@ -54,16 +52,16 @@ public class Product {
 	
 	private Boolean active = true;
 	
-	@JsonIgnoreProperties(allowGetters = false)
-	private Date dateLastSale;
+	@JsonIgnore
+	private OffsetDateTime dateLastSale;
 	
-	private Date dateLastPurchase;
+	private OffsetDateTime dateLastPurchase;
 	
 	@CreationTimestamp
-	private Date dateCreation;
+	private OffsetDateTime dateCreation;
 	
 	@UpdateTimestamp
-	private Date dateUpdate;
+	private OffsetDateTime dateUpdate;
 	
 	@Valid
 	@ConvertGroup(from = Default.class, to = categoryId.class)
@@ -72,8 +70,8 @@ public class Product {
 	@JoinColumn(nullable = false)
 	private Category category;
 	
-	@JsonIgnore
-	@ManyToOne(fetch = FetchType.LAZY)
+	
+	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Provider provider;
 

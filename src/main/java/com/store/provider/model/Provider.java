@@ -1,6 +1,6 @@
 package com.store.provider.model;
 
-import java.util.Date;
+import java.time.OffsetDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -42,9 +42,9 @@ public class Provider {
 	private Address address;
 	
 	@CreationTimestamp
-	private Date dateCreation;
+	private OffsetDateTime dateCreation;
 	
 	@UpdateTimestamp
-	private Date dateUpdate;
+	private OffsetDateTime dateUpdate;
 
 }

@@ -1,7 +1,7 @@
 package com.store.sale.model;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import com.store.client.Client;
+import com.store.client.model.Client;
 import com.store.productsale.ProductSale;
 import com.store.user.User;
 
@@ -33,7 +33,7 @@ public class Sale {
 	private String codeSale; //código venda?
 	private BigDecimal subtotal; //arrumar no banco deposis
 	private BigDecimal totalValue;
-	private LocalDateTime dateSale;
+	private OffsetDateTime dateSale;
 	
 	private StatusSale statusSale; // Verificar nome depois
 	
