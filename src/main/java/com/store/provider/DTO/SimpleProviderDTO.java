@@ -1,4 +1,4 @@
-package com.store.provider.DTO;
+package com.store.provider.dto;
 
 import lombok.Getter;
 import lombok.Setter;

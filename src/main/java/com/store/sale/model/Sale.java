@@ -16,7 +16,7 @@ import javax.persistence.OneToMany;
 
 import com.store.client.model.Client;
 import com.store.productsale.ProductSale;
-import com.store.user.User;
+import com.store.user.model.User;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

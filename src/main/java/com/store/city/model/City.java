@@ -1,4 +1,4 @@
-package com.store.city;
+package com.store.city.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

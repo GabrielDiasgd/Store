@@ -1,4 +1,4 @@
-package com.store.user;
+package com.store.address.model;
 
 import java.time.OffsetDateTime;
 
@@ -8,12 +8,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.store.profile.Profile;
+import com.store.city.model.City;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,21 +20,20 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class User {
-	
+public class Address {
+
+
 	@EqualsAndHashCode.Include
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private long id;
 	
-	@NotEmpty
-	private String name;
-	private String email;
-	private String cpf;
-	private String rg;
-	private String password;
-	private Boolean active = true;
-	
+	private String street;
+	private Integer number;
+	private String neighborhood;
+	private String complement;
+	private String cep;
+
 	@CreationTimestamp
 	private OffsetDateTime dateCreation;
 	
@@ -43,6 +41,8 @@ public class User {
 	private OffsetDateTime dateUpdate;
 	
 	@ManyToOne
-	@JoinColumn(name = "profile_id", nullable = false)
-	private Profile profile;
+	@JoinColumn(nullable = false)
+	private City city;
+	
+	
 }

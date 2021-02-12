@@ -12,8 +12,8 @@ import com.store.Product.model.Product;
 import com.store.Product.repository.ProductRepository;
 import com.store.exception.EntityInUseException;
 import com.store.exception.ProductNotFoundException;
-import com.store.provider.ProviderService;
 import com.store.provider.model.Provider;
+import com.store.provider.service.ProviderService;
 
 @Service
 public class ProductService {

@@ -2,6 +2,8 @@ package com.store.client.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -52,7 +54,7 @@ public class ClientController {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public ClientDTO add (@RequestBody ClientInput clientInput) {
+	public ClientDTO add (@RequestBody @Valid ClientInput clientInput) {
 	
 		Client client = clientService.save(clientDisassembler.toDomainObject(clientInput));
 		
@@ -60,7 +62,7 @@ public class ClientController {
 	}
 	
 	@PutMapping("/{clientId}")
-	public ClientDTO update (@PathVariable Long clientId, @RequestBody ClientInput clientInput) {
+	public ClientDTO update (@PathVariable Long clientId, @RequestBody @Valid ClientInput clientInput) {
 	
 		Client currentClient = clientService.find(clientId);
 		Client client = clientDisassembler.toDomainObject(clientInput);

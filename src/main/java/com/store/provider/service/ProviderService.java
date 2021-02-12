@@ -1,4 +1,4 @@
-package com.store.provider;
+package com.store.provider.service;
 
 import javax.transaction.Transactional;
 
@@ -7,8 +7,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import com.store.address.Address;
-import com.store.address.AddressService;
+import com.store.address.Service.AddressService;
+import com.store.address.model.Address;
 import com.store.exception.EntityInUseException;
 import com.store.exception.ProviderNotFoundException;
 import com.store.provider.model.Provider;

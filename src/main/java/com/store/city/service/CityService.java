@@ -1,8 +1,10 @@
-package com.store.city;
+package com.store.city.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.store.city.model.City;
+import com.store.city.repository.CityRepository;
 import com.store.exception.CityNotFoundException;
 
 @Service

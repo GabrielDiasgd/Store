@@ -1,4 +1,4 @@
-package com.store.address;
+package com.store.phone.model;
 
 import java.time.OffsetDateTime;
 
@@ -6,44 +6,28 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
-import com.store.city.City;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Entity
-@Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Address {
-
-
-	@EqualsAndHashCode.Include
+@Data
+public class Phone {
+	
 	@Id
+	@EqualsAndHashCode.Include
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
-	
-	private String street;
-	private Integer number;
-	private String neighborhood;
-	private String complement;
-	private String cep;
-	
+	private Long id;
 
+	private String number;
+	
 	@CreationTimestamp
 	private OffsetDateTime dateCreation;
 	
 	@UpdateTimestamp
 	private OffsetDateTime dateUpdate;
-	
-	@ManyToOne
-	@JoinColumn(nullable = false)
-	private City city;
-	
-	
 }

@@ -10,7 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.store.address.Address;
+import com.store.address.DTO.AddressDTO;
+import com.store.address.converters.AddressAssemblerDTO;
+import com.store.address.converters.AddressDisassemblerInput;
+import com.store.address.input.AddressInput;
+import com.store.address.model.Address;
 import com.store.client.service.ClientService;
 import com.store.exception.AddressNotFoundException;
 import com.store.exception.BusinessException;
@@ -23,12 +27,18 @@ public class ClientAddressController {
 	@Autowired
 	private ClientService clientService;
 	
-
+	@Autowired
+	private AddressAssemblerDTO addressAssembler;
+	
+	@Autowired
+	private AddressDisassemblerInput addressDisassembler;
 
 	@PutMapping
-	public Address add (@PathVariable Long clientId, @RequestBody Address address) {
+	@ResponseStatus(HttpStatus.CREATED)
+	public AddressDTO add (@PathVariable Long clientId, @RequestBody AddressInput addressInput) {
 		try {
-			return clientService.addClientAddress(clientId, address);
+			Address address = addressDisassembler.toDomainObjec(addressInput);
+			return addressAssembler.toDTO(clientService.addClientAddress(clientId, address));
 		} catch (AddressNotFoundException | CityNotFoundException e) {
 			throw new BusinessException(e.getMessage());
 		}
@@ -37,10 +47,11 @@ public class ClientAddressController {
 	}
 	
 	@PutMapping("/{addressId}")
-	public Address update (@PathVariable Long clientId, @PathVariable Long addressId,
-			@RequestBody Address address) {
+	public AddressDTO update (@PathVariable Long clientId, @PathVariable Long addressId,
+			@RequestBody AddressInput addressInput) {
 		try {
-			return clientService.updateClientAddress(clientId, addressId, address);
+			Address address = addressDisassembler.toDomainObjec(addressInput);
+			return addressAssembler.toDTO(clientService.updateClientAddress(clientId, addressId, address));
 		} catch (AddressNotFoundException | CityNotFoundException e) {
 			throw new BusinessException(e.getMessage());
 		}

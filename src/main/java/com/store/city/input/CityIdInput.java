@@ -1,4 +1,4 @@
-package com.store.provider.input;
+package com.store.city.input;
 
 import javax.validation.constraints.NotNull;
 
@@ -7,8 +7,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ProviderIdInput {
+public class CityIdInput {
 	
 	@NotNull
 	private Long id;
+
 }

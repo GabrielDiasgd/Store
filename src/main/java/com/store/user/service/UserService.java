@@ -11,7 +11,7 @@ import com.store.exception.EntityInUseException;
 import com.store.exception.UserNotFoundException;
 import com.store.profile.Profile;
 import com.store.profile.service.ProfileService;
-import com.store.user.User;
+import com.store.user.model.User;
 import com.store.user.repository.UserRepositoty;
 
 @Service

@@ -11,7 +11,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.store.client.service.ClientService;
-import com.store.phone.Phone;
+import com.store.phone.converters.PhoneAssemblerDTO;
+import com.store.phone.converters.PhoneDisassemblerInput;
+import com.store.phone.dto.PhoneDTO;
+import com.store.phone.input.PhoneInput;
+import com.store.phone.model.Phone;
 
 @RestController
 @RequestMapping("/clients/{clientId}/phones")
@@ -21,16 +25,25 @@ public class ClientPhoneController {
 	@Autowired
 	private ClientService clientService;
 	
+	@Autowired
+	private PhoneAssemblerDTO phoneAssembler;
+	
+	@Autowired
+	private PhoneDisassemblerInput phoneDisassembler;
+	
+	
 	
 	@PutMapping
-	public Phone add (@PathVariable Long clientId, @RequestBody Phone phone) {
-		return clientService.addClientPhone(clientId, phone);
+	public PhoneDTO add (@PathVariable Long clientId, @RequestBody PhoneInput phoneInput) {
+		Phone phone = phoneDisassembler.toDomainObject(phoneInput);
+		return phoneAssembler.toDTO(clientService.addClientPhone(clientId, phone));
 	}
 	
 	@PutMapping("/{phoneId}")
-	public Phone updateClientPhone(@PathVariable Long clientId, 
-			@PathVariable Long phoneId, @RequestBody Phone phone) {
-		return clientService.updateClientPhone(clientId, phoneId, phone);
+	public PhoneDTO updateClientPhone(@PathVariable Long clientId, 
+			@PathVariable Long phoneId, @RequestBody PhoneInput phoneInput) {
+		Phone phone = phoneDisassembler.toDomainObject(phoneInput);
+		return phoneAssembler.toDTO(clientService.updateClientPhone(clientId, phoneId, phone));
 	}
 	
 	@DeleteMapping("/{phoneId}")

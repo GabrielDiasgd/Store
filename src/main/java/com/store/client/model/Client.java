@@ -16,8 +16,8 @@ import javax.persistence.ManyToMany;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.store.address.Address;
-import com.store.phone.Phone;
+import com.store.address.model.Address;
+import com.store.phone.model.Phone;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

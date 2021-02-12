@@ -7,14 +7,14 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.store.address.Address;
-import com.store.address.AddressService;
+import com.store.address.Service.AddressService;
+import com.store.address.model.Address;
 import com.store.client.model.Client;
 import com.store.client.repository.ClientRepository;
 import com.store.exception.ClientNotFoundException;
 import com.store.exception.EntityInUseException;
-import com.store.phone.Phone;
-import com.store.phone.PhoneService;
+import com.store.phone.model.Phone;
+import com.store.phone.service.PhoneService;
 
 @Service
 public class ClientService {
@@ -113,7 +113,7 @@ public class ClientService {
 		Phone currentPhone = phoneService.find(phoneId);
 		
 		
-		client.getClientPhone().forEach(clientPhone -> {
+		client.getClientPhone().forEach(clientPhone -> { ///arrumar para retornar exceção
 			if (clientPhone.equals(currentPhone)) {
 				BeanUtils.copyProperties(phone, currentPhone, "id", "dateCreation");
 			}

@@ -14,7 +14,7 @@ import com.store.client.service.ClientService;
 import com.store.sale.model.Sale;
 import com.store.sale.model.StatusSale;
 import com.store.sale.repository.SaleRepository;
-import com.store.user.User;
+import com.store.user.model.User;
 import com.store.user.service.UserService;
 
 @Service

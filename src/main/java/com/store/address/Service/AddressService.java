@@ -1,4 +1,4 @@
-package com.store.address;
+package com.store.address.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -6,8 +6,10 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.store.city.City;
-import com.store.city.CityService;
+import com.store.address.model.Address;
+import com.store.address.repository.AddressRepository;
+import com.store.city.model.City;
+import com.store.city.service.CityService;
 import com.store.exception.AddressNotFoundException;
 import com.store.exception.EntityInUseException;
 

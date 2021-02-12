@@ -1,4 +1,4 @@
-package com.store.phone;
+package com.store.phone.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.store.exception.EntityInUseException;
 import com.store.exception.PhoneNotFoundException;
+import com.store.phone.model.Phone;
+import com.store.phone.repository.PhoneRepository;
 
 @Service
 public class PhoneService {

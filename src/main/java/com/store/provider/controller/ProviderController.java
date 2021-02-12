@@ -2,6 +2,8 @@ package com.store.provider.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,9 +17,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.store.provider.ProviderService;
+import com.store.provider.converters.ProviderAssemblerDTO;
+import com.store.provider.converters.ProviderDisassemblerInput;
+import com.store.provider.dto.ProviderDTO;
+import com.store.provider.input.ProviderInput;
 import com.store.provider.model.Provider;
 import com.store.provider.repository.ProviderRepository;
+import com.store.provider.service.ProviderService;
 
 @RestController
 @RequestMapping("/providers")
@@ -29,30 +35,38 @@ public class ProviderController {
 	@Autowired
 	private ProviderService providerService;
 	
+	@Autowired
+	private ProviderAssemblerDTO providerAssembler;
+	
+	@Autowired
+	private ProviderDisassemblerInput providerDisassembler;
+	
 	@GetMapping
-	public List<Provider> listProvider () {
-		return providerRepository.findAll();
+	public List<ProviderDTO> listProviders () {
+		return providerAssembler.toCollectionDTO(providerRepository.findAll());
 	}
 	
 	
 	@GetMapping("/{providerId}")
-	public Provider find (@PathVariable Long providerId) {
-		return providerService.find(providerId);
+	public ProviderDTO find (@PathVariable Long providerId) {
+		return providerAssembler.toDTO(providerService.find(providerId));
 	}
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Provider add (@RequestBody Provider provider) {
-		return providerService.save(provider);
+	public ProviderDTO add (@RequestBody @Valid ProviderInput providerInput) {
+		Provider provider = providerDisassembler.toDomainObject(providerInput);
+		return providerAssembler.toDTO(providerService.save(provider));
 	}
 	
 	@PutMapping("/{providerId}")
 	@ResponseStatus(HttpStatus.OK)
-	public Provider update(@PathVariable Long providerId, @RequestBody Provider provider) {
+	public ProviderDTO update(@PathVariable Long providerId, @RequestBody @Valid ProviderInput providerInput) {
+		Provider provider = providerDisassembler.toDomainObject(providerInput);
 		Provider  currentProvider = providerService.find(providerId);
 		BeanUtils.copyProperties(provider, currentProvider , "id", "dateCreation");
 		
-		return providerService.save(currentProvider);
+		return providerAssembler.toDTO(providerService.save(currentProvider));
 	}
 	
 	

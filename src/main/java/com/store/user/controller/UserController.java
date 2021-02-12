@@ -1,4 +1,4 @@
-package com.store.user;
+package com.store.user.controller;
 
 import java.util.List;
 
@@ -19,6 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.store.exception.BusinessException;
 import com.store.exception.ProfileNotFoundException;
+import com.store.user.converters.UserAssemblerDTO;
+import com.store.user.converters.UserDisassemblerInput;
+import com.store.user.dto.UserDTO;
+import com.store.user.input.UserInput;
+import com.store.user.model.User;
 import com.store.user.repository.UserRepositoty;
 import com.store.user.service.UserService;
 
@@ -32,23 +37,30 @@ public class UserController {
 	@Autowired
 	private UserRepositoty userRepository;
 	
+	@Autowired
+	private UserAssemblerDTO userAssembler;
+	
+	@Autowired
+	private UserDisassemblerInput userDisassembler;
+	
 	
 	@GetMapping
-	public List<User> listUsers (){
-		return userRepository.findAll();
+	public List<UserDTO> listUsers (){
+		return userAssembler.toCollectionDTO(userRepository.findAll());
 	}
 	
 	
 	@GetMapping("/{userId}")
-	public User find (@PathVariable Long userId) {
-		return userService.find(userId);
+	public UserDTO find (@PathVariable Long userId) {
+		return userAssembler.toDTO(userService.find(userId));
 	}
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public User add (@RequestBody @Valid User user) {
+	public UserDTO add (@RequestBody @Valid UserInput userInput) {
 		try {
-			return userService.save(user);
+			User user = userDisassembler.toDomainObject(userInput);
+			return userAssembler.toDTO(userService.save(user));
 		} catch (ProfileNotFoundException e) {
 			throw new BusinessException(e.getMessage());
 		}
@@ -56,13 +68,13 @@ public class UserController {
 	}
 	
 	@PutMapping("/{userId}")
-	public User update (@PathVariable Long userId, @Valid @RequestBody User user) {
+	public UserDTO update (@PathVariable Long userId, @Valid @RequestBody UserInput userInput) {
 		try {
 			User currentUser = userService.find(userId);
-			
+			User user = userDisassembler.toDomainObject(userInput);
 			BeanUtils.copyProperties(user, currentUser, "id", "dateCreation");
 			
-			return userService.save(currentUser);
+			return userAssembler.toDTO(userService.save(currentUser));
 		} catch (ProfileNotFoundException e) {
 			throw new BusinessException(e.getMessage());
 		}
