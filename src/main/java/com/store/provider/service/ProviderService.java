@@ -42,6 +42,7 @@ public class ProviderService {
 	public void delete (Long providerId) {
 		try {
 			providerRepository.deleteById(providerId);
+			providerRepository.flush();
 		} catch (EmptyResultDataAccessException e) {
 			throw new ProviderNotFoundException (providerId);
 		} catch (DataIntegrityViolationException e) {

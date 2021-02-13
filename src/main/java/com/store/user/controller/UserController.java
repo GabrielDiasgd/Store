@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -70,11 +69,11 @@ public class UserController {
 	@PutMapping("/{userId}")
 	public UserDTO update (@PathVariable Long userId, @Valid @RequestBody UserInput userInput) {
 		try {
-			User currentUser = userService.find(userId);
-			User user = userDisassembler.toDomainObject(userInput);
-			BeanUtils.copyProperties(user, currentUser, "id", "dateCreation");
+			User user = userService.find(userId);
 			
-			return userAssembler.toDTO(userService.save(currentUser));
+			userDisassembler.copyToDomainObject(userInput, user);
+	
+			return userAssembler.toDTO(userService.save(user));
 		} catch (ProfileNotFoundException e) {
 			throw new BusinessException(e.getMessage());
 		}

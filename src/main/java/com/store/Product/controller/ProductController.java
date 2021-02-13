@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -70,10 +69,10 @@ public class ProductController {
 	@ResponseStatus(HttpStatus.OK)
 	public ProductDTO update(@PathVariable Long productId, @RequestBody @Valid ProductInput productInput) {
 		try {
-			Product product = productDisassembler.toDomainObject(productInput);
+			//Product product = productDisassembler.toDomainObject(productInput);
 			Product currentProduct = productService.find(productId);
 			
-			BeanUtils.copyProperties(product, currentProduct, "id", "dateCreation");
+			productDisassembler.copyToDomainObject(productInput, currentProduct);
 			return productAssembler.toDTO(productService.save(currentProduct));
 			
 		} catch (CategoryNotFoundException | ProviderNotFoundException e) {

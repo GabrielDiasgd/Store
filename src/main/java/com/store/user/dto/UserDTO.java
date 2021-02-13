@@ -1,6 +1,6 @@
 package com.store.user.dto;
 
-import com.store.profile.Profile;
+import com.store.profile.dto.ProfileDTO;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -16,5 +16,5 @@ public class UserDTO {
 	private String rg;
 	private Boolean active = true;
 
-	private Profile profile;
+	private ProfileDTO profile;
 }

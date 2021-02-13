@@ -50,7 +50,6 @@ public class Client {
 	@UpdateTimestamp
 	private OffsetDateTime dateUpdate;
 	
-	
 	@ManyToMany
 	@JoinTable(name = "client_address", 
 			joinColumns = @JoinColumn(name = "client_id"),

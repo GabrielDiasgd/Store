@@ -1,5 +1,7 @@
 package com.store.client.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,7 +37,7 @@ public class ClientAddressController {
 
 	@PutMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public AddressDTO add (@PathVariable Long clientId, @RequestBody AddressInput addressInput) {
+	public AddressDTO add (@PathVariable Long clientId, @RequestBody @Valid AddressInput addressInput) {
 		try {
 			Address address = addressDisassembler.toDomainObjec(addressInput);
 			return addressAssembler.toDTO(clientService.addClientAddress(clientId, address));
@@ -48,10 +50,9 @@ public class ClientAddressController {
 	
 	@PutMapping("/{addressId}")
 	public AddressDTO update (@PathVariable Long clientId, @PathVariable Long addressId,
-			@RequestBody AddressInput addressInput) {
+			@RequestBody @Valid AddressInput addressInput) {
 		try {
-			Address address = addressDisassembler.toDomainObjec(addressInput);
-			return addressAssembler.toDTO(clientService.updateClientAddress(clientId, addressId, address));
+			return addressAssembler.toDTO(clientService.updateClientAddress(clientId, addressId, addressInput));
 		} catch (AddressNotFoundException | CityNotFoundException e) {
 			throw new BusinessException(e.getMessage());
 		}

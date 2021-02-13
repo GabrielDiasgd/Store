@@ -2,7 +2,8 @@ package com.store.profile.controller;
 
 import java.util.List;
 
-import org.springframework.beans.BeanUtils;
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,6 +17,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.store.profile.Profile;
+import com.store.profile.converters.ProfileAssemblerDTO;
+import com.store.profile.converters.ProfileDisassemblerInput;
+import com.store.profile.dto.ProfileDTO;
+import com.store.profile.input.ProfileInput;
 import com.store.profile.repository.ProfileRepository;
 import com.store.profile.service.ProfileService;
 
@@ -29,25 +34,32 @@ public class ProfileController {
 	@Autowired
 	private ProfileRepository profileRepository;
 	
+	@Autowired
+	private ProfileAssemblerDTO profileAssembler;
+	
+	@Autowired
+	private ProfileDisassemblerInput profileDisassembler;
+	
 	
 	@GetMapping
-	public List<Profile> listProfiles (){
-		return profileRepository.findAll();
+	public List<ProfileDTO> listProfiles (){
+		return profileAssembler.toCollectionDTO(profileRepository.findAll());
 	}
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Profile add (@RequestBody Profile profile) {
-		return profileService.save(profile);
+	public ProfileDTO add (@RequestBody @Valid ProfileInput profileInput) {
+		Profile profile = profileDisassembler.toDomainObject(profileInput);
+		return profileAssembler.toDTO(profileService.save(profile));
 	}
 	
 	@PutMapping("/{profileId}")
-	public Profile update (@PathVariable Long profileId, @RequestBody Profile profile) {
-		Profile currentProfile = profileService.find(profileId);
+	public ProfileDTO update (@PathVariable Long profileId, @RequestBody @Valid ProfileInput profileInput) {
+		Profile profile = profileService.find(profileId);
 		
-		BeanUtils.copyProperties(profile, currentProfile, "id", "dateCreation");
+		profileDisassembler.copyToDomainObject(profileInput, profile);
 		
-		return profileService.save(currentProfile);
+		return profileAssembler.toDTO(profileService.save(profile));
 	}
 	
 	@DeleteMapping("/{profileId}")

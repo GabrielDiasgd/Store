@@ -2,7 +2,8 @@ package com.store.permission.controller;
 
 import java.util.List;
 
-import org.springframework.beans.BeanUtils;
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,6 +17,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.store.permission.Permission;
+import com.store.permission.converters.PermissionAssemblerDTO;
+import com.store.permission.converters.PermissionDisassemblerInput;
+import com.store.permission.dto.PermissionDTO;
+import com.store.permission.input.PermissionInput;
 import com.store.permission.repository.PermissionRepository;
 import com.store.permission.service.PermissionService;
 
@@ -29,24 +34,31 @@ public class PermissionController {
 	@Autowired
 	private PermissionService permissionService;
 	
+	@Autowired
+	private PermissionAssemblerDTO permissionAssembler;
+	
+	@Autowired
+	private PermissionDisassemblerInput permissionDisassembler;
+	
 	@GetMapping
-	public List<Permission> listPermissions () {
-		return permissionRepository.findAll();
+	public List<PermissionDTO> listPermissions () {
+		return permissionAssembler.toCollectionDTO(permissionRepository.findAll());
 	}
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Permission add (@RequestBody Permission permission) {
-		return permissionService.save(permission);
+	public PermissionDTO add (@RequestBody @Valid PermissionInput permissionInput) {
+		Permission permission = permissionDisassembler.toDomainObject(permissionInput);
+		return permissionAssembler.toDTO(permissionService.save(permission));
 	}
 	
 	@PutMapping("/{permissionId}")
-	public Permission update (@PathVariable Long permissionId, @RequestBody Permission permission) {
-		Permission currentPermission = permissionService.find(permissionId);
+	public PermissionDTO update (@PathVariable Long permissionId, @RequestBody @Valid PermissionInput permissionInput) {
+		Permission permission = permissionService.find(permissionId);
 		
-		BeanUtils.copyProperties(permission, currentPermission);
+		permissionDisassembler.copyToDomainObject(permissionInput, permission);
 		
-		return permissionService.save(currentPermission);
+		return permissionAssembler.toDTO(permissionService.save(permission));
 	}
 	
 	@DeleteMapping("/{permissionId}")

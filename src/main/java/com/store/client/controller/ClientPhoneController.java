@@ -1,5 +1,7 @@
 package com.store.client.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,16 +36,15 @@ public class ClientPhoneController {
 	
 	
 	@PutMapping
-	public PhoneDTO add (@PathVariable Long clientId, @RequestBody PhoneInput phoneInput) {
+	public PhoneDTO add (@PathVariable Long clientId, @RequestBody @Valid PhoneInput phoneInput) {
 		Phone phone = phoneDisassembler.toDomainObject(phoneInput);
 		return phoneAssembler.toDTO(clientService.addClientPhone(clientId, phone));
 	}
 	
 	@PutMapping("/{phoneId}")
 	public PhoneDTO updateClientPhone(@PathVariable Long clientId, 
-			@PathVariable Long phoneId, @RequestBody PhoneInput phoneInput) {
-		Phone phone = phoneDisassembler.toDomainObject(phoneInput);
-		return phoneAssembler.toDTO(clientService.updateClientPhone(clientId, phoneId, phone));
+			@PathVariable Long phoneId, @RequestBody @Valid PhoneInput phoneInput) {
+		return phoneAssembler.toDTO(clientService.updateClientPhone(clientId, phoneId, phoneInput));
 	}
 	
 	@DeleteMapping("/{phoneId}")

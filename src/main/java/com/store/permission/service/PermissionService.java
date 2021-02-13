@@ -1,11 +1,10 @@
 package com.store.permission.service;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.store.exception.EntityInUseException;
 import com.store.exception.PermissionNotFoundException;
@@ -28,9 +27,11 @@ public class PermissionService {
 				.orElseThrow(() ->  new PermissionNotFoundException(permissionId));
 	}
 	
+	@Transactional
 	public void delete (Long permissionId) {
 		try {
 			permissionRepository.deleteById(permissionId);
+			permissionRepository.flush();
 		} catch (EmptyResultDataAccessException e) {
 			throw new PermissionNotFoundException(permissionId);
 		} catch (DataIntegrityViolationException e) {

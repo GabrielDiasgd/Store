@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -62,11 +61,10 @@ public class ProviderController {
 	@PutMapping("/{providerId}")
 	@ResponseStatus(HttpStatus.OK)
 	public ProviderDTO update(@PathVariable Long providerId, @RequestBody @Valid ProviderInput providerInput) {
-		Provider provider = providerDisassembler.toDomainObject(providerInput);
-		Provider  currentProvider = providerService.find(providerId);
-		BeanUtils.copyProperties(provider, currentProvider , "id", "dateCreation");
+		Provider  provider = providerService.find(providerId);
+		providerDisassembler.copyToDomainObject(providerInput, provider);
 		
-		return providerAssembler.toDTO(providerService.save(currentProvider));
+		return providerAssembler.toDTO(providerService.save(provider));
 	}
 	
 	

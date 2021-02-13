@@ -16,5 +16,10 @@ public class ClientDisassemblerInput {
 	public Client toDomainObject (ClientInput clientInput) {
 		return modelMapper.map(clientInput, Client.class);
 	}
+	
+	
+	public void copyToDomainObject (ClientInput clientInput, Client client) {
+		modelMapper.map(clientInput, client);
+	}
 
 }

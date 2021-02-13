@@ -14,7 +14,9 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
 	
 
 //	@Query("from Client where address.id = :address and id = :client ")
-//	Optional<Client> findById1(@Param("client")Long clientId,@Param("address") Long addressId);
+//	Optional<Client> findById(@Param("client")Long clientId, @Param("address") Long addressId);
+//	
+
 	
 	 @Query("from Client c left join fetch c.clientAddress")
 	 List<Client> findAll();

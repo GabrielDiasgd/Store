@@ -1,11 +1,10 @@
 package com.store.user.service;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.store.exception.EntityInUseException;
 import com.store.exception.UserNotFoundException;
@@ -39,9 +38,11 @@ public class UserService {
 	}
 	
 	
+	@Transactional
 	public void delete(Long userId) {
 		try {
 			userRepositoty.deleteById(userId);
+			userRepositoty.flush();
 		}catch (EmptyResultDataAccessException e) {
 			throw new UserNotFoundException(userId);
 		} catch (DataIntegrityViolationException e) {

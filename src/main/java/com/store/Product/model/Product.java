@@ -36,7 +36,6 @@ public class Product {
 	
 	private BigDecimal price;
 	
-	
 	private BigDecimal buyPrice;
 	
 	private Boolean active = true;
@@ -61,6 +60,10 @@ public class Product {
 	@JoinColumn(nullable = false)
 	private Provider provider;
 
+	
+	public void stockSale (Long quantity) {
+		this.stock = this.stock - quantity;
+	}
 	
 	
 

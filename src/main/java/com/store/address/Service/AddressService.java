@@ -36,14 +36,18 @@ public class AddressService {
 	}
 	
 	
+	@Transactional
 	public void delete (Long addressId) {
 		try {
 			addressRepository.deleteById(addressId);
+			addressRepository.flush();
 		} catch (EmptyResultDataAccessException e) {
 			throw new AddressNotFoundException(addressId);
 		} catch (DataIntegrityViolationException e) {
 			throw new EntityInUseException(String.format("Address with id %d cannot be removed, because it is in use.", addressId));
 		}
 	}
+	
+
 
 }

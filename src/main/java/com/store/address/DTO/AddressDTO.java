@@ -1,9 +1,6 @@
 package com.store.address.DTO;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-
-import com.store.city.input.CityIdInput;
+import com.store.city.DTO.CityDTO;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -18,7 +15,5 @@ public class AddressDTO {
 	private String complement;
 	private String cep;
 	
-	@Valid
-	@NotNull
-	private CityIdInput city;
+	private CityDTO city;
 }

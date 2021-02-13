@@ -54,7 +54,6 @@ public class ProductSale {
 		if (quantity == null) {
 			quantity = 0L;
 		}
-		
 		this.setTotalValue(unitaryValue.multiply(new BigDecimal(quantity)));
 	}
 }

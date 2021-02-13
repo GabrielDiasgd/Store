@@ -41,10 +41,12 @@ public class SaleService {
 		
 		sale.setClient(client);
 		sale.setUser(user);
-	
+
 		
 		validateProducts(sale);
 		sale.calculateTotalValue();
+		
+		sale.teste();
 		saleRepository.save(sale);
 		
 		return sale;	
@@ -54,11 +56,17 @@ public class SaleService {
 	public void validateProducts (Sale sale) {
 		sale.getProductsSale().forEach(productSale -> {
 		Product product = productService.find(productSale.getProduct().getId());
-		System.out.println(product.getName());
-		productSale.setSale(sale);
-		productSale.setProduct(product);
-		productSale.setUnitaryValue(product.getPrice());
-		System.out.println(product.getPrice());
+		if (productSale.getProduct().getPrice() != null) {
+			productSale.setSale(sale);
+			productSale.setUnitaryValue(productSale.getProduct().getPrice());
+			productSale.setProduct(product);
+			//product.stockSale(productSale.getQuantity());
+		} else {
+			productSale.setSale(sale);
+			productSale.setProduct(product);
+			productSale.setUnitaryValue(product.getPrice());
+			//product.stockSale(productSale.getQuantity());
+		}
 		});
 	}
 

@@ -1,6 +1,5 @@
 package com.store.client.service;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -8,11 +7,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.store.address.Service.AddressService;
+import com.store.address.converters.AddressDisassemblerInput;
+import com.store.address.input.AddressInput;
 import com.store.address.model.Address;
 import com.store.client.model.Client;
 import com.store.client.repository.ClientRepository;
+import com.store.exception.AddressNotFoundException;
 import com.store.exception.ClientNotFoundException;
 import com.store.exception.EntityInUseException;
+import com.store.exception.PhoneNotFoundException;
+import com.store.phone.converters.PhoneDisassemblerInput;
+import com.store.phone.input.PhoneInput;
 import com.store.phone.model.Phone;
 import com.store.phone.service.PhoneService;
 
@@ -27,6 +32,12 @@ public class ClientService {
 	
 	@Autowired
 	private PhoneService phoneService;
+	
+	@Autowired
+	private AddressDisassemblerInput addressDisassembler;
+	
+	@Autowired
+	private PhoneDisassemblerInput phoneDisassembler;
 
 	@Transactional
 	public Client save(Client client) {
@@ -42,9 +53,11 @@ public class ClientService {
 		return clientRepository.save(client);
 	}
 
+	@Transactional
 	public void delete(Long clientId) {
 		try {
 			clientRepository.deleteById(clientId);
+			clientRepository.flush();
 		} catch (EmptyResultDataAccessException e) {
 			throw new ClientNotFoundException(clientId);
 		} catch (DataIntegrityViolationException e) {
@@ -71,27 +84,39 @@ public class ClientService {
 	}
 
 	@Transactional
-	public Address updateClientAddress(Long clientId, Long addressId, Address address) {
+	public Address updateClientAddress(Long clientId, Long addressId, AddressInput addressInput) {
 		Client client = find(clientId);
 		Address currentAddress = addressService.find(addressId);
 		
-			client.getClientAddress().forEach(ads -> {
-				System.out.println(ads.getId() + " = " + currentAddress.getId());
-				if (ads.equals(currentAddress)) {
-					 BeanUtils.copyProperties(address, currentAddress, "id", "dateCreation"); //Tentar o select conjunto para ver se resolve
-					} 	
-			});
-		
+			boolean existAddress = client.getClientAddress().stream()
+					.anyMatch((a) -> a.equals(currentAddress));
+			
+			if (existAddress) {
+				 addressDisassembler.copyToDomainObject(addressInput, currentAddress);
+			}else {
+				throw new AddressNotFoundException(String.format("Not exist address with id %d, in client with id %d", addressId, clientId));
+			}
+	
 			return addressService.save(currentAddress);
 		}
+
 	
 	@Transactional
 	public void deleteClientAddress(Long clientId, Long addressId) {
 		Client client = find(clientId);
 		Address currentAddress = addressService.find(addressId); //ao passar um id que não está vinculado ao cliente da pau
-		addressService.delete(addressId);
 		
-		client.disassociateAddress(currentAddress);
+
+		boolean existAddress = client.getClientAddress().stream()
+				.anyMatch((a) -> a.equals(currentAddress));
+		
+		if (existAddress) {
+			client.disassociateAddress(currentAddress);
+			addressService.delete(addressId);
+		}else {
+			throw new AddressNotFoundException(String.format("Not exist address with id %d, in client with id %d", addressId, clientId));
+		}
+		
 	}
 
 	
@@ -108,16 +133,19 @@ public class ClientService {
 	}
 
 	@Transactional
-	public Phone updateClientPhone (Long clientId, Long phoneId, Phone phone) {
+	public Phone updateClientPhone (Long clientId, Long phoneId, PhoneInput phoneInput) {
 		Client client = find(clientId);
 		Phone currentPhone = phoneService.find(phoneId);
 		
 		
-		client.getClientPhone().forEach(clientPhone -> { ///arrumar para retornar exceção
-			if (clientPhone.equals(currentPhone)) {
-				BeanUtils.copyProperties(phone, currentPhone, "id", "dateCreation");
-			}
-		});
+		boolean existPhone = client.getClientPhone().stream()
+				.anyMatch((phone) -> phone.equals(currentPhone));
+		
+		if (existPhone) {
+			phoneDisassembler.copyToDomainObject(phoneInput, currentPhone);
+		} else {
+			throw new PhoneNotFoundException(String.format("Not exist phone with id %d, in client %s", phoneId, client.getName()));
+		}
 		
 		return phoneService.save(currentPhone);
 

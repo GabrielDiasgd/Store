@@ -2,6 +2,7 @@ package com.store.client.input;
 
 import java.time.LocalDate;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
 import com.store.client.model.ClientStatus;
@@ -18,6 +19,8 @@ public class ClientInput {
 	
 	private String cpf;
 	private String rg;
+	
+	@Email
 	private String email;
 	private String note;
 	

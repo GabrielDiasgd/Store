@@ -31,6 +31,7 @@ public class PhoneService {
 	public void delete (Long phoneId) {
 		try {
 			phoneRepository.deleteById(phoneId);
+			phoneRepository.flush();
 		} catch (EmptyResultDataAccessException e) {
 			throw new PhoneNotFoundException(phoneId);
 		} catch (DataIntegrityViolationException e) {

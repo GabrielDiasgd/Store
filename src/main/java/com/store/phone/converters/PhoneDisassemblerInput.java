@@ -16,5 +16,10 @@ public class PhoneDisassemblerInput {
 	public Phone toDomainObject (PhoneInput phoneInput) {
 		return modelMapper.map(phoneInput, Phone.class);
 	}
+	
+	
+	public void copyToDomainObject (PhoneInput phoneInput, Phone phone) {
+		modelMapper.map(phoneInput, phone);
+	}
 
 }

@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -64,12 +63,11 @@ public class ClientController {
 	@PutMapping("/{clientId}")
 	public ClientDTO update (@PathVariable Long clientId, @RequestBody @Valid ClientInput clientInput) {
 	
-		Client currentClient = clientService.find(clientId);
-		Client client = clientDisassembler.toDomainObject(clientInput);
+		Client client = clientService.find(clientId);
 		
-		BeanUtils.copyProperties(client, currentClient, "id", "dateCreation", "clientAddress", "clientPhone");
+		clientDisassembler.copyToDomainObject(clientInput, client);
 		
-		return clientAssembler.toDTO(clientService.save(currentClient));
+		return clientAssembler.toDTO(clientService.save(client));
 	}
 	
 	@DeleteMapping("/{clientId}")

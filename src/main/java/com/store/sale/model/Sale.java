@@ -31,7 +31,7 @@ public class Sale {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String codeSale; //código venda?
-	private BigDecimal subtotal; //arrumar no banco deposis
+	private BigDecimal subtotal;
 	private BigDecimal totalValue;
 	private OffsetDateTime dateSale;
 	
@@ -56,7 +56,6 @@ public class Sale {
 	
 	public void calculateTotalValue () {
 		getProductsSale().forEach(ProductSale::calculateTotalPrice);
-		
 		this.subtotal = getProductsSale().stream()
 				.map(item -> item.getTotalValue())
 				.reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -64,6 +63,14 @@ public class Sale {
 		this.totalValue = subtotal;
 	}
 	
+	
+	public void teste () {
+		productsSale.forEach(item -> {
+			var stock = item.getProduct().getStock();
+			stock = stock - item.getQuantity();
+			item.getProduct().setStock(stock);
+		});
+	}
 
 
 }

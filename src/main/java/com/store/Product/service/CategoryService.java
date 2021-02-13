@@ -1,11 +1,10 @@
 package com.store.Product.service;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.store.Product.model.Category;
 import com.store.Product.repository.CategoryRepository;
@@ -29,6 +28,7 @@ public class CategoryService {
 	public void delete(Long categoryId) {
 		try {
 			categoryRepository.deleteById(categoryId);
+			categoryRepository.flush();
 		} catch (EmptyResultDataAccessException e) {
 			throw new CategoryNotFoundException(categoryId);
 		}	catch (DataIntegrityViolationException e) {

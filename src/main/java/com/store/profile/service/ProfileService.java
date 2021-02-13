@@ -1,11 +1,10 @@
 package com.store.profile.service;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.store.exception.EntityInUseException;
 import com.store.exception.ProfileNotFoundException;
@@ -28,9 +27,11 @@ public class ProfileService {
 		return profileRepository.save(profile);
 	}
 	
+	@Transactional
 	public void delete (Long profileId) {
 		try {
 			profileRepository.deleteById(profileId);
+			profileRepository.flush();
 		} catch (EmptyResultDataAccessException e) {
 			throw new ProfileNotFoundException(profileId);
 		} catch (DataIntegrityViolationException e) {

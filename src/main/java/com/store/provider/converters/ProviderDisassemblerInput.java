@@ -16,5 +16,9 @@ public class ProviderDisassemblerInput {
 	public Provider toDomainObject(ProviderInput providerInput) {
 		return modelMapper.map(providerInput, Provider.class);
 	}
+	
+	public void copyToDomainObject (ProviderInput providerInput, Provider provider) {
+		modelMapper.map(providerInput, provider);
+	}
 
 }
