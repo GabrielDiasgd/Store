@@ -6,9 +6,10 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.store.Product.model.Category;
 import com.store.Product.model.Product;
 import com.store.Product.repository.ProductRepository;
+import com.store.category.model.Category;
+import com.store.category.service.CategoryService;
 import com.store.exception.EntityInUseException;
 import com.store.exception.ProductNotFoundException;
 import com.store.provider.model.Provider;

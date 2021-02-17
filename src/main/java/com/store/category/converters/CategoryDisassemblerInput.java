@@ -1,11 +1,11 @@
-package com.store.Product.converters;
+package com.store.category.converters;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.store.Product.input.CategoryInput;
-import com.store.Product.model.Category;
+import com.store.category.input.CategoryInput;
+import com.store.category.model.Category;
 
 @Component
 public class CategoryDisassemblerInput {

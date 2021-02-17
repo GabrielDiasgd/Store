@@ -1,4 +1,4 @@
-package com.store.Product.converters;
+package com.store.category.converters;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -7,8 +7,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.store.Product.CategoryDTO;
-import com.store.Product.model.Category;
+import com.store.category.dto.CategoryDTO;
+import com.store.category.model.Category;
 
 @Component
 public class CategoryAssemblerDTO {

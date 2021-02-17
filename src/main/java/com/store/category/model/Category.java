@@ -1,4 +1,4 @@
-package com.store.Product.model;
+package com.store.category.model;
 
 import java.time.OffsetDateTime;
 

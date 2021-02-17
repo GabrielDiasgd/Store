@@ -1,4 +1,4 @@
-package com.store.Product.service;
+package com.store.category.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -6,8 +6,8 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.store.Product.model.Category;
-import com.store.Product.repository.CategoryRepository;
+import com.store.category.model.Category;
+import com.store.category.repository.CategoryRepository;
 import com.store.exception.CategoryNotFoundException;
 import com.store.exception.EntityInUseException;
 

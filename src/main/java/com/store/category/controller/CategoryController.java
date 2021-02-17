@@ -1,4 +1,4 @@
-package com.store.Product.controller;
+package com.store.category.controller;
 
 import java.util.List;
 
@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.store.Product.CategoryDTO;
-import com.store.Product.converters.CategoryAssemblerDTO;
-import com.store.Product.converters.CategoryDisassemblerInput;
-import com.store.Product.input.CategoryInput;
-import com.store.Product.model.Category;
-import com.store.Product.repository.CategoryRepository;
-import com.store.Product.service.CategoryService;
+import com.store.category.converters.CategoryAssemblerDTO;
+import com.store.category.converters.CategoryDisassemblerInput;
+import com.store.category.dto.CategoryDTO;
+import com.store.category.input.CategoryInput;
+import com.store.category.model.Category;
+import com.store.category.repository.CategoryRepository;
+import com.store.category.service.CategoryService;
 
 @RestController
 @RequestMapping("/categories")

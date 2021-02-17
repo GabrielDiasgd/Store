@@ -1,4 +1,4 @@
-package com.store.Product.input;
+package com.store.category.input;
 
 import javax.validation.constraints.NotEmpty;
 

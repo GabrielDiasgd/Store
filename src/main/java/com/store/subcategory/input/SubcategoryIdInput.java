@@ -1,4 +1,4 @@
-package com.store.Product.input;
+package com.store.subcategory.input;
 
 import javax.validation.constraints.NotNull;
 
@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CategoryIdInput {
+public class SubcategoryIdInput {
 	
 	@NotNull
 	private Long id;

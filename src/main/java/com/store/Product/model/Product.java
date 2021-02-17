@@ -13,7 +13,10 @@ import javax.persistence.ManyToOne;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.store.brand.model.Brand;
+import com.store.category.model.Category;
 import com.store.provider.model.Provider;
+import com.store.subcategory.model.Subcategory;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -59,6 +62,13 @@ public class Product {
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Provider provider;
+	
+	@ManyToOne
+	@JoinColumn(nullable = false)
+	private Brand brand;
+	
+	@ManyToOne
+	private Subcategory subcategory;
 
 	
 	public void stockSale (Long quantity) {
