@@ -33,11 +33,15 @@ public class Sale {
 	private String codeSale; //código venda?
 	private BigDecimal subtotal;
 	private BigDecimal totalValue;
+	private Long discountPercentage;
+	private BigDecimal discountValue;
+	private BigDecimal amountPaid;
+	private BigDecimal change;
 	private OffsetDateTime dateSale;
 	
-	private StatusSale statusSale; // Verificar nome depois
+	private StatusSale statusSale;
 	
-	//private String type; //enum Adicionar no banco de dados
+	private TypeSale typeSale; 
 	
 	
 	@ManyToOne

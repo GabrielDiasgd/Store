@@ -29,6 +29,6 @@ public class Brand {
 	private OffsetDateTime dateCreation;
 	
 	@UpdateTimestamp
-	private OffsetDateTime dateUpadate;
+	private OffsetDateTime dateUpdate;
 	
 }

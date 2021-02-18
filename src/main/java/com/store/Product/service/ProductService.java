@@ -8,12 +8,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.store.Product.model.Product;
 import com.store.Product.repository.ProductRepository;
+import com.store.brand.model.Brand;
+import com.store.brand.service.BrandService;
 import com.store.category.model.Category;
 import com.store.category.service.CategoryService;
 import com.store.exception.EntityInUseException;
 import com.store.exception.ProductNotFoundException;
 import com.store.provider.model.Provider;
 import com.store.provider.service.ProviderService;
+import com.store.subcategory.model.Subcategory;
+import com.store.subcategory.service.SubcategoryService;
 
 @Service
 public class ProductService {
@@ -26,6 +30,12 @@ public class ProductService {
 	
 	@Autowired
 	private ProviderService providerService;
+	
+	@Autowired
+	private BrandService brandService;
+	
+	@Autowired
+	private SubcategoryService subcategoryService;
 	
 	
 	public Product find(Long productId) {
@@ -41,6 +51,12 @@ public class ProductService {
 		
 		Provider provider = providerService.find(product.getProvider().getId());
 		product.setProvider(provider);
+		
+		Brand brand = brandService.find(product.getBrand().getId());
+		product.setBrand(brand);
+		
+		Subcategory subcategory = subcategoryService.find(product.getSubcategory().getId());
+		product.setSubcategory(subcategory);
 		
 		return productRepository.save(product);
 	}

@@ -35,5 +35,5 @@ public class Subcategory {
 	private OffsetDateTime dateCreation;
 	
 	@UpdateTimestamp
-	private OffsetDateTime dataUpdate;
+	private OffsetDateTime dateUpdate;
 }
