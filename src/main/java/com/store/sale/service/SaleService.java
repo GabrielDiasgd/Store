@@ -11,8 +11,13 @@ import com.store.Product.model.Product;
 import com.store.Product.service.ProductService;
 import com.store.client.model.Client;
 import com.store.client.service.ClientService;
+import com.store.formpayment.model.FormPayment;
+import com.store.formpayment.service.FormPaymentService;
+import com.store.installmentsale.model.InstallmentSale;
+import com.store.installmentsale.repositiry.InstallmentSaleRepository;
 import com.store.sale.model.Sale;
 import com.store.sale.model.StatusSale;
+import com.store.sale.model.TypeSale;
 import com.store.sale.repository.SaleRepository;
 import com.store.user.model.User;
 import com.store.user.service.UserService;
@@ -32,25 +37,49 @@ public class SaleService {
 	@Autowired
 	private ProductService productService;
 	
+	@Autowired
+	private FormPaymentService formPaymentService;
+	
+	@Autowired
+	private InstallmentSaleRepository installmentSaleRepository;
+	
+	
     @Transactional
 	public Sale save (Sale sale) {
 		Client client = clientService.find(sale.getClient().getId());
 		User user = userService.find(sale.getUser().getId());
-		sale.setDateSale(OffsetDateTime.now());
-		sale.setStatusSale(StatusSale.FINISHED);
+		FormPayment formPayment = formPaymentService.find(sale.getFormPayment().getId());
 		
+		sale.setDateSale(OffsetDateTime.now());
 		sale.setClient(client);
 		sale.setUser(user);
+		sale.setFormPayment(formPayment);
+		
+		InstallmentSale installmentSale = new InstallmentSale();
+	
+			sale.setStatusSale(StatusSale.FINISHED);
+			validateProducts(sale);
+			sale.calculateTotalValue();
+			saleRepository.save(sale);
+			
+			if (sale.getTypeSale().equals(TypeSale.TERM)) {
+				installmentSale = setInstallmentSale(sale);
+				installmentSaleRepository.save(installmentSale);
+			}
+			
 
-		
-		validateProducts(sale);
-		sale.calculateTotalValue();
-		
-		sale.teste();
-		saleRepository.save(sale);
-		
 		return sale;	
 	}
+    
+    public InstallmentSale setInstallmentSale (Sale sale) {
+    	InstallmentSale installmentSale = new InstallmentSale();
+    	installmentSale.setClient(sale.getClient());
+    	installmentSale.setSale(sale);
+    	installmentSale.setDueDate(sale.getDateSale().plusDays(30));
+    	installmentSale.setStatus(1L);
+    	
+    	return installmentSale;
+    }
 	
 	
 	public void validateProducts (Sale sale) {
@@ -60,12 +89,12 @@ public class SaleService {
 			productSale.setSale(sale);
 			productSale.setUnitaryValue(productSale.getProduct().getPrice());
 			productSale.setProduct(product);
-			//product.stockSale(productSale.getQuantity());
+			product.setStock(product.getStock() - productSale.getQuantity());
 		} else {
 			productSale.setSale(sale);
 			productSale.setProduct(product);
 			productSale.setUnitaryValue(product.getPrice());
-			//product.stockSale(productSale.getQuantity());
+			product.setStock(product.getStock() - productSale.getQuantity());
 		}
 		});
 	}

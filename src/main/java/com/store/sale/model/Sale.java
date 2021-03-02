@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.store.client.model.Client;
+import com.store.formpayment.model.FormPayment;
 import com.store.productsale.ProductSale;
 import com.store.user.model.User;
 
@@ -36,7 +37,8 @@ public class Sale {
 	private Long discountPercentage;
 	private BigDecimal discountValue;
 	private BigDecimal amountPaid;
-	private BigDecimal change;
+	//private BigDecimal change;  // tem que colocar outro nome (change of money)
+	
 	private OffsetDateTime dateSale;
 	
 	private StatusSale statusSale;
@@ -51,6 +53,10 @@ public class Sale {
 	@ManyToOne
 	@JoinColumn(name = "user_id", nullable = false)
 	private User user;
+	
+	@ManyToOne
+	@JoinColumn(name = "form_payment_id", nullable = false)
+	private FormPayment formPayment;
 
 
 	@OneToMany(mappedBy = "sale", cascade = CascadeType.ALL)
@@ -63,8 +69,16 @@ public class Sale {
 		this.subtotal = getProductsSale().stream()
 				.map(item -> item.getTotalValue())
 				.reduce(BigDecimal.ZERO, BigDecimal::add);
+		if (this.discountPercentage >= 1) {
+			this.discountValue = subtotal.multiply(new BigDecimal(this.discountPercentage).divide(BigDecimal.valueOf(100)));
+			this.totalValue = subtotal.subtract(discountValue) ;
+		} else {
+			this.totalValue = subtotal;
+		}
+	
+	 
 		
-		this.totalValue = subtotal;
+		
 	}
 	
 	

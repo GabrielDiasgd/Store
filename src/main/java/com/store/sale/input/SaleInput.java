@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import com.store.client.input.ClientIdInput;
+import com.store.formpayment.input.FormPaymentIdInput;
 import com.store.productsale.ProductSale;
 import com.store.sale.model.TypeSale;
 import com.store.user.input.UserIdInput;
@@ -29,7 +30,11 @@ public class SaleInput {
 	private Long discountPercentage;
 	private BigDecimal discountValue;
 	private BigDecimal amountPaid;
-	private TypeSale typeSale; 
+	private TypeSale typeSale;
+	
+	@Valid
+	@NotNull
+	private FormPaymentIdInput formPayment;
 	
 	
 	private List<ProductSale> productsSale = new ArrayList<>();
