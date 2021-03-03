@@ -14,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.store.cashier.model.Cashier;
 import com.store.client.model.Client;
 import com.store.formpayment.model.FormPayment;
 import com.store.productsale.ProductSale;
@@ -44,6 +46,11 @@ public class Sale {
 	private StatusSale statusSale;
 	
 	private TypeSale typeSale; 
+	
+	@JsonIgnore
+	@ManyToOne
+	@JoinColumn(name = "cashier_id", nullable = false)
+	private Cashier cashier;
 	
 	
 	@ManyToOne

@@ -20,6 +20,8 @@ delete from subcategory;
 delete from brand;
 delete from form_payment;
 delete from installment_sale;
+delete from cashier;
+delete from sale_cashier;
 
 set foreign_key_checks = 1;
 
@@ -40,6 +42,7 @@ alter table subcategory auto_increment = 1;
 alter table brand auto_increment = 1;
 alter table form_payment auto_increment = 1;
 alter table installment_sale auto_increment = 1;
+alter table cashier auto_increment = 1;
 
 insert into category (description, date_creation, date_update) values ("Roupas", utc_timestamp(), utc_timestamp());
 insert into category (description, date_creation, date_update) values ("Calçados", utc_timestamp(), utc_timestamp());

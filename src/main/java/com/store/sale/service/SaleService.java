@@ -1,6 +1,7 @@
 package com.store.sale.service;
 
 import java.time.OffsetDateTime;
+import java.util.NoSuchElementException;
 
 import javax.transaction.Transactional;
 
@@ -9,8 +10,10 @@ import org.springframework.stereotype.Service;
 
 import com.store.Product.model.Product;
 import com.store.Product.service.ProductService;
+import com.store.cashier.repository.CashierRepository;
 import com.store.client.model.Client;
 import com.store.client.service.ClientService;
+import com.store.exception.AddressNotFoundException;
 import com.store.formpayment.model.FormPayment;
 import com.store.formpayment.service.FormPaymentService;
 import com.store.installmentsale.model.InstallmentSale;
@@ -43,6 +46,9 @@ public class SaleService {
 	@Autowired
 	private InstallmentSaleRepository installmentSaleRepository;
 	
+	@Autowired
+	private CashierRepository cashierRepository;
+	
 	
     @Transactional
 	public Sale save (Sale sale) {
@@ -57,16 +63,25 @@ public class SaleService {
 		
 		InstallmentSale installmentSale = new InstallmentSale();
 	
+		var cashier = cashierRepository.findByStatusOpen();
+	
+
+			sale.setCashier(cashier.get());
 			sale.setStatusSale(StatusSale.FINISHED);
 			validateProducts(sale);
 			sale.calculateTotalValue();
 			saleRepository.save(sale);
 			
+			try {
+				cashier.get().getSalesCashier().add(sale);
+			} catch (NoSuchElementException e) {
+				throw new AddressNotFoundException("test");
+			}
+	
 			if (sale.getTypeSale().equals(TypeSale.TERM)) {
 				installmentSale = setInstallmentSale(sale);
 				installmentSaleRepository.save(installmentSale);
 			}
-			
 
 		return sale;	
 	}
